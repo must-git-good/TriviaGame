@@ -3,3 +3,18 @@
 *{
 
 }
+.content-hold{
+    background-color: black;
+    height: 400px;
+    width: 600px;
+    margin: 10px 0px;
+}
+.question{
+    text-align: center;
+    color:white;
+    font-size: 1.75em;
+
+}
+.answers{
+    color: white;
+}
