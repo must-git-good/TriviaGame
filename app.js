@@ -55,9 +55,10 @@ var theQuestion = "";
 var theAnswer = -1;
 var answerChoices = [];
 //
-var correctAnswers = 0;
+var correctAnswerCounter = 0;
 var wrongGuesses = 0;
-
+var correctFlag = 2;     // We need more states than true/false. So:  0=false, 1=true, 2=reset (waiting for answer) 
+var counter = 0;            //This is the counter for questions presented. Ticks up as each is given.
 
 
 
@@ -84,6 +85,13 @@ function getCurrent(questionNumber) {
     assignAnswer(questionNumber);
 }
 
+
+
+function pageUpdate(){
+    $("#results").html("Correct counter: "+correctAnswerCounter +"  /  Wrong counter:"+ wrongGuesses+"..." );
+}
+
+
 //Let's create the html to fill, dynamically:
 
 
@@ -98,7 +106,6 @@ function populateQuestions(question){
 for (var i = 0; i<numOfQuestionsDesired; i++){
 
     var workspace = $("#middle");
-
     var contentArea = $("<div>");
     var showQuestion = $("<span>");
     var answerArea = $("<div>");
@@ -128,39 +135,25 @@ for (var i = 0; i<numOfQuestionsDesired; i++){
         console.log(question[i].a.Choices);
         console.log(question[i].a.Choices.length);
          
-        
-        
-       
-        
-
-
-
-
-
-        // for(var j= 1; j<(question[0].a.length); j++){
-        //     makeButton.attr("id", "answer-"+[j]);
-        //     makeButton.attr("value", [j]);
-        //     makeButton.text([j]+".")
-        //     answerArea.append(makeButton);   
-        // }
-
-   
-//
-// function populateChoices(){    //where j is  number of answers to your questions so question.a.length-1
-//     for(var j= 1; j<(question.a.length-1); j++){
-//         specificAnswer = question.a[j];
-//     }
-// };
-
-
-
-
-
-//
     workspace.append(contentArea);
 
 } //end of for loop
 }; //end of populate function
+
+function presentQuestion(answerTime){
+    
+    window.setTimeout(function() {
+    $("#section-number-"+(counter-1)).hide('fast');
+    var revealNextQuestion = $("#section-number-"+counter).show('slow');
+    console.log(counter);
+    
+
+        
+        
+}, answerTime);
+}
+
+
 
 
 $(document).ready(function(){
@@ -174,48 +167,15 @@ $(".content-hold").hide();
 
 
 
-
-// div class="content-hold" id ="section-number-">
-//                     <h3><span id="question">Put your question here.</span></h3>
-//                     <div>
-//                             <button type="button" class="btn btn-secondary" id="btn1">A.</button>
-//                             <span id="A1"> Here's an answer. </span><br>
-//                             <button type="button" class="btn btn-secondary" id="btn2">B.</button>
-//                             <span id="A2"> Here's another one. </span><br>
-//                             <button type="button" class="btn btn-secondary" id="btn3">C.</button>
-//                             <span id="A3"> Here's the third possibility. </span><br>
-//                             <button type="button" class="btn btn-secondary" id="btn4">D.</button>
-//                             <span id="A4"> AND...one last one. </span><br>
-//                     </div>
-//                 </div>
-
-
-
-
-////////////
-
-// questionElement = 
-
-
-
-
-
-
-
 //Game Execution 
 /////////////////////////////////////////////////////////////////////////////
 
 
 
 document.onkeyup = function () {
-    var counter = -1;
-    window.setInterval(function(){
-    $("#section-number-"+(counter-1)).hide();
-    var revealNextQuestion = $("#section-number-"+counter).show();
-    console.log(counter);
-    counter++;
-    console.log(counter);
-}, 5000);
+    
+    
+    presentQuestion(10000); 
 
 
 
@@ -238,26 +198,38 @@ $(".btn").on("click", function(){
         console.log("True1 " +clickedAnswer);
         console.log("True2 " +question[currentQuestion].correctAnswer);
 
+
     if (clickedAnswer == question[currentQuestion].correctAnswer){
-        alert("You earned a point.");
-        correctAnswer++;
-            //RIGHT ANSWER EVENTS HERE.
+        console.log("A correct answer is logged.");
+        correctAnswerCounter++;
+        clearInterval(questionTime);
+        counter++;
+        presentQuestion(answerTime);
+        pageUpdate();
+    
     } else if (clickedAnswer != question[currentQuestion].correctAnswer){
-        alert("You got it WRONG!");
+        console.log("A WRONG answer was logged");
         wrongGuesses++;
-            //WRONG GUESS EVENTS HERE.
-    }       
+        clearInterval(questionTime);
+        counter++;
+        pageUpdate();
+        presentQuestion(answerTime);
+        
+    
 
-
-
+    } else {
+        console.log("No answer given yet, or we're reset")
+            counter++;
+            pageUpdate();
+            presentQuestion(answerTime);
+        
+    }
 })
 
 // $(".btn").on("click", function(){
 //     alert("The click works!");
 // })
 
-
-// $("#section-number-1").show();
 
 
     console.log("OnKey has activated");
