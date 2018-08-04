@@ -1,45 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script
-    src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <title>Trivia</title>
 </head>
+
 <body>
-    
+
     <header>
         <div>
-            <h2>Trivia: Timed.</h2>
+            <h2>Literary Trivia:</h2>
         </div>
     </header>
-
 
     <div class="container">
         <div class="row">
             <div class="col-sm-1">
             </div>
-    
-            <div class ="col-sm-10" id="middle">
-                <div class="content-hold" id ="section-number-">
-                    <h3><span id="question">Put your question here.</span></h3>
+
+            <div class="col-sm-10" id="middle">
+                <div class="content-hold" id="section-start">
+                    <h3>
+                        <span id="question">Welcome to Literary Trivia!</span>
+                    </h3>
                     <div>
-                            <button type="button" class="btn btn-secondary" id="btn1">A.</button>
-                            <span id="A1"> Here's an answer. </span><br>
-                            <button type="button" class="btn btn-secondary" id="btn2">B.</button>
-                            <span id="A2"> Here's another one. </span><br>
-                            <button type="button" class="btn btn-secondary" id="btn3">C.</button>
-                            <span id="A3"> Here's the third possibility. </span><br>
-                            <button type="button" class="btn btn-secondary" id="btn4">D.</button>
-                            <span id="A4"> AND...one last one. </span><br>
+                        <div>
+                            <p>Here's some instructions about what to do...</p>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -48,16 +47,12 @@
             </div>
         </div>
     </div>
-    
-    
-        <footer>
-            <div>
-                    <h2 id="results"> </h2>
-            </div>
+
+    <footer>
+        <h2 id="results"> </h2>
     </footer>
-
-
 
     <script type="text/javascript" src="app.js"></script>
 </body>
+
 </html>

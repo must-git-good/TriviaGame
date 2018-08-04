@@ -3,18 +3,67 @@
 *{
 
 }
+header{
+    text-align: center;
+    padding: 1.5em;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color:#331707;
+    color:  #bf8149;
+    opacity: .8;
+    border-bottom: solid;
+    border-color: #1f0e03;
+    border-width: 5px;
+}
+h2{
+    font-size: 3em;
+    opacity: 1;
+}
+body{
+    background-image: url("../../assets/images/literary_bg.jpg");
+    background-size: 130%;
+    background-repeat: none;
+    background-color: #bf8149;
+}
 .content-hold{
-    background-color: black;
-    height: 400px;
-    width: 600px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color: #bf8149;
+    height: 35em;
+    opacity: 1;
+    border: solid;
+    border-color: #1f0e03;
+    border-width: 5px;
+    width: 100%;
     margin: 10px 0px;
 }
 .question{
-    text-align: center;
-    color:white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: right;
+    color: #1f0e03;
     font-size: 1.75em;
 
 }
 .answers{
-    color: white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: #1f0e03;
+    font-size: 2.0em;
+}
+footer{
+    width: 100%;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    position: fixed;
+    color: #1f0e03;
+    text-align: center;
+    font-size: 1em;
+    bottom: -5px;
+    background-color: #bf8149;
+    opacity: .9;
+    padding: 15px;
+
+}
+#results{
+    text-align: center;
+    font-size: 1.7em;
+}
+.btn{
+    margin:20px
 }
