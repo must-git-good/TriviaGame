@@ -67,3 +67,7 @@ footer{
 .btn{
     margin:20px
 }
+#clock{
+    font-size: 1.5em;
+    visibility: hidden;
+}

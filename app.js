@@ -1,4 +1,4 @@
-// A Trivia Game!
+// A Trivia Game...on the clock!
 
 
 //Global variables, arrays and objects
@@ -64,6 +64,9 @@ var showNextQuestion = $("#section-number-" + counter).show('slow');
 var hideLoadingScreen = $("#section-start").attr("visibility: hidden");
 var hideCurrentQuestion = $("#section-number-" + counter).hide('fast');
 var showLoadingScreen = $("#section-start").attr("visibility: visible")
+var timerLength = 10;
+var pauseBetween = 3;
+var timer = timerLength;
 
 
 
@@ -204,3 +207,50 @@ var questionCountdown = function () {
 
 };
 
+///////////////
+
+//playing with better ways to do this
+
+
+var myVar = setInterval(function() {
+    myTimer();
+  }, 1000);
+  
+  function myTimer() {
+    var showTime = timer--;
+    $("#clock").html(showTime);
+    // $("#clock").attr("visibility", "visible");
+    // document.getElementById("#clock").innerHTML = (d);
+
+    
+    if (showTime > timerLength){
+        $("#clock").css("visibility", "hidden");
+        console.log("Break between question");
+    } if (showTime <= timerLength) {
+        $("#clock").css("visibility", "visible");
+        console.log("Time during the question");
+    } if (showTime <= 0){
+        console.log("We're failing here in negative numbers.")
+        timer = timerLength+pauseBetween;
+        // $("#clock").attr("visibility", "hidden");
+  }
+  }
+
+
+
+//   var startTimer = function(){
+//     timer = 5;
+//     $("#clock").attr("visibility", "visible");
+//     if (fixD <= 0){
+//         alert("The logic works.")
+//         $("#clock").attr("visibility", "hidden");
+//     }
+
+//   }
+
+//   startTimer();
+
+
+  $(document).on("click", function(){
+   
+  });
