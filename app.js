@@ -6,81 +6,137 @@
 
 var question = [
     {
-        q: "What's my favorite book?",
+        q: "What is the study of time-measuring devices called?",
         a: {
             Button: [null, "A.", "B.", "C.", "D."],
-            Choices: [null, "Flowers for Algernon", "Redwall", "Ender's Game", "Harry Potter and the Philosopher's Stone"]
+            Choices: [null, "Tempology", "Clock Science", "Horology", "Pneumenosism"]
         },
         correctAnswer: 3,
         userCorrect: false,
-        diff: 10,
+        diff: 6,
         hint: " ",
 
     }, {
-        q: "What author wrote the last book that I read?",
+        q: "An early Egyptian time-measuring device was oriented facing ______ each morning.",
         a: {
             Button: [null, "A.", "B.", "C.", "D."],
-            Choices: [null, "Stephen King", "Arthur C. Clarke", "Robin McKinley", "Brandon Sanderson"]
+            Choices: [null, "East", "West", "Upright", "Towards the Moon"]
         },
         correctAnswer: 1,
         userCorrect: false,
-        diff: 7,
+        diff: 2,
         hint: " ",
     }, {
-        q: "Which prestigious literary award was awarded to Lois Lowry's 'The Giver'?",
+        q: "The most precise timekeeping tool of the ancient world was powered by: ",
         a: {
             Button: [null, "A.", "B.", "C.", "D."],
-            Choices: [null, "The Pulitzer Prize", "The Newbery Medal", "The Hugo Award", "The Nobel Prize in Literature"]
+            Choices: [null, "Springs", "Water", "Pendulums", "Sunlight"]
         },
         userCorrect: false,
         correctAnswer: 2,
         diff: 1,
         hint: " ",
     }, {
-        q: "Is this the last question that I'm putting in for now?",
+        q: "The most accurate timekeeping devices are: ",
         a: {
             Button: [null, "A.", "B.", "C.", "D."],
-            Choices: [null, "False.", "What?!", "Nah!", "Yeah..."]
+            Choices: [null, "Metronomes", "Quartz-powered", "Quantum Computers", "Atomic Clocks"]
         },
         userCorrect: false,
         correctAnswer: 4,
         diff: 1,
         hint: " ",
+    }, {
+        q: "A day is _______ seconds long.",
+        a: {
+            Button: [null, "A.", "B.", "C.", "D."],
+            Choices: [null, "525,600.", "256,800", "24 x 60", "86,400"]
+        },
+        userCorrect: false,
+        correctAnswer: 4,
+        diff: 1,
+        hint: " ",
+    }, {
+        q: "Alarm clocks first appeared in ancient ______.",
+        a: {
+            Button: [null, "A.", "B.", "C.", "D."],
+            Choices: [null, "Rome", "Greece", "China", "Egypt"]
+        },
+        userCorrect: false,
+        correctAnswer: 2,
+        diff: 1,
+        hint: " ",
+    }, {
+        q: "Atomic clocks are accurate down to the second over the course of __________.",
+        a: {
+            Button: [null, "A.", "B.", "C.", "D."],
+            Choices: [null, "Millions of Years", "Caesium's Half-life", "52 light-years x the Plack constant", "Eternity"]
+        },
+        userCorrect: false,
+        correctAnswer: 1,
+        diff: 1,
+        hint: " ",
+    }, {
+        q: "The SI base unit of time is the:",
+        a: {
+            Button: [null, "A.", "B.", "C.", "D."],
+            Choices: [null, "Nanosecond.", "Minute", "Second", "Tic"]
+        },
+        userCorrect: false,
+        correctAnswer: 3,
+        diff: 1,
+        hint: " ",
+    }, {
+        q: "What is the 'arm' of a sundial known as?",
+        a: {
+            Button: [null, "A.", "B.", "C.", "D."],
+            Choices: [null, "triangulator", "gnomon", "chronometer", "T-square"]
+        },
+        userCorrect: false,
+        correctAnswer: 2,
+        diff: 1,
+        hint: " ",
+    }, {
+        q: "He invented the minute-hand:",
+        a: {
+            Button: [null, "A.", "B.", "C.", "D."],
+            Choices: [null, "Jost Burgi", "Duke Richard of Minuet", "Galileo", "Christian Huygens"]
+        },
+        userCorrect: false,
+        correctAnswer: 1,
+        diff: 1,
+        hint: " ",
     }
-    //make a bunch more of these. find a 3rd party so I don't have to think of tons of questions.
+    //Questions are from wikipedia entry on "Time". Create more of these when you're able.
 ];
 
 var theQuestion = "";
 var theAnswer = -1;
 var answerChoices = [];
-//
 var correctAnswerCounter = 0;
-var wrongGuesses = 0;
+var wrongGuesses = -1;
 var counter = 0;            //This is the counter for questions presented. Ticks up as each is given.count
-
 var showCurrentQuestion = $("#section-number-" + (counter - 1)).show('slow');
 var hidePreviousQuestion = $("#section-number-" + (counter - 1)).hide('fast');
 var showNextQuestion = $("#section-number-" + counter).show('slow');
 var hideLoadingScreen = $("#section-start").css("visibility", "hidden");
 var hideCurrentQuestion = $("#section-number-" + counter).hide('fast');
 var showLoadingScreen = $("#section-start").css("visibility", "visible");
-var timerLength = 10;
-var pauseBetween = 3;
+var timerLength = (15 - Math.floor((correctAnswerCounter/2)));
+var pauseBetween = 2;
 var timer = timerLength;
 var hideTimer = $("#clock").css("visibility", "hidden");
 var showTimer = $("#clock").css("visibility", "visible");
 var showTime;
-
-
-
-
+var tick = setInterval(function () {
+    myTimer();
+}, 1000);
+var gameTitle = "On-the-clock Trivia";
 
 //Global functions
 //////////////////////////////////////////////////////////////////////////////
 
 function chooseQuestion(questionNumber) {
-    console.log("questionNumber: ", questionNumber);
-    console.log("question: ", question);
     theQuestion = question[questionNumber].q;
 }
 function assignAnswer(questionNumber) {
@@ -94,85 +150,77 @@ function getCurrent(questionNumber) {
     listAnswers(questionNumber);
     assignAnswer(questionNumber);
 }
-
 function populateQuestions(question) {
-    numOfQuestionsDesired = question.length    //Setting this variable to "all questions" for now, but can be dynamic.
+    numOfQuestionsDesired = question.length                 //Setting this variable to "all questions" for now, but can be dynamic.
     for (var i = 0; i < numOfQuestionsDesired; i++) {
-
         var workspace = $("#middle");
         var contentArea = $("<div>");
         var showQuestion = $("<span>");
         var answerArea = $("<div>");
-        var makeButton = $("<button" + question[i].a.Choices.length + ">")
-
+        var makeButton = $("<button" + question[i].a.Choices.length + ">");
+        var endScreen = $("#end");
+        var welcomeScreen = $("#welcome");
         getCurrent(i);
         contentArea.addClass("content-hold");
         contentArea.attr("id", "section-number-" + [i]);
         contentArea.html(showQuestion);
-
         showQuestion.addClass("question");
         showQuestion.attr(("id", "question-number-" + [i]));
-
         showQuestion.html(theQuestion);
-
         contentArea.append(answerArea);
-
         answerArea.addClass("answers");
         answerArea.attr("id", "answers-to-" + [i]);
+        welcomeScreen.html("<h2> Welcome to "+gameTitle+". <br><br> Each round you'll have limited time to answer a question.<br><br> The more you get right, the faster the clock gets! <br><br> Good luck..." );
+        endScreen.html("<h2>Game over. <br> Hope you beat the clock! <br><br>You scored a: " +(parseInt(correctAnswerCounter)/parseInt(question.length)*100)+ " %! </h2>");
+        workspace.prepend(welcomeScreen);
+        workspace.append(endScreen);
         for (var j = 1; j < question[i].a.Choices.length; j++) {
             answerArea.append("<button class='btn' value=" + [i] + [j] + " id=" + [question[i].a.Button[j]] + ">" + " " + question[i].a.Button[j]);
             answerArea.append("  " + question[i].a.Choices[j] + "<br><br>");
         }
-
         workspace.append(contentArea);
 
     } //end of for loop
 }; //end of populate function
+function myTimer() {
+    showTime = timer--;
+    $(".clock").html("Time remaining this round: " + showTime);
+    hideTimer = $("#clock").css("visibility", "hidden");
 
+    if (showTime > timerLength) {
+        hideTimer = $("#clock").css("visibility", "hidden");
+        showLoadingScreen = $("#section-start").css("visibility", "visible");
+        console.log("Break between question");
+        pageUpdate();
+    } if (showTime <= timerLength) {
+        showTimer;
+        showTimer = $("#clock").css("visibility", "visible");
+        hideLoadingScreen = $("#section-start").css("visibility", "hidden");
+        showCurrentQuestion = $("#section-number-" + (counter - 1)).show('slow');
+        console.log("Time during the question");
+        pageUpdate();
+    } if (showTime <= 0) {
+        $("#welcome").hide();
+        console.log("We're failing here in negative numbers.");
+        hideCurrentQuestion = $("#section-number-" + counter).hide('fast');
+        hidePreviousQuestion = $("#section-number-" + (counter - 1)).hide('slow');
+        wrongGuesses++;
+        timer = timerLength + pauseBetween;
+        counter++;
+        pageUpdate();
+    }
+}
 function pageUpdate() {
     $("#results").html("You've known something interesting " + correctAnswerCounter + " times.<br>You've made: " + wrongGuesses + " wrong guesses...");
     if (correctAnswerCounter + wrongGuesses >= question.length) {
         console.log("End-game condition");
-        $("#end").html("<h2>Game over. Hope you beat the clock! See your score below!</h2>");
+        hideTimer = $("#clock").css("visibility", "hidden");
+        hidePreviousQuestion = $("#section-number-" + (counter - 1)).hide('slow');
+        $("#end").html("<h2>Game over. <br> Hope you beat the clock! <br><br>You scored a: " +(parseInt(correctAnswerCounter)/parseInt(question.length)*100)+ " %! </h2>");
         $("#end").show();
         clearInterval(tick);
     };
 }
-
-// var questionCountdown = function () {
-
-//     setTimeout(questionTimeExpires, 1000 * 12);
-//     setTimeout(totalTimeExpires, 1000 * 14);
-//     setTimeout(totalTime, 1000 * 16);
-
-function questionTimeExpires() {
-    console.log("No time left to answer.")
-    hidePreviousQuestion = $("#section-number-" + (counter - 1)).hide('slow');
-}
-function totalTimeExpires() {
-    showLoadingScreen = $("#section-start").css("visibility", "visible");
-    console.log("Display results")
-}
-function totalTime() {
-
-    console.log("Push next question.")
-    //push next question.
-    hideLoadingScreen = $("#section-start").css("visibility", "hidden");
-    showNextQuestion = $("#section-number-" + counter).show('slow');
-    counter++;
-    pageUpdate();
-    // questionCountdown();
-}
-// }
-
-// var questionOnTimer = function() {
-
-
-
-
-
-
-
 
 
 //Game Execution 
@@ -181,13 +229,16 @@ $(document).ready(function () {
     populateQuestions(question);    //pushes the question Object into the DOM
     $(".content-hold").hide();      //hides all questions for later use
     pageUpdate();                     //Gives stats
-
+    hideTimer = $("#clock").css("visibility", "hidden");
     showCurrentQuestion = $("#section-number-" + (counter - 1)).show('slow');
-    // questionCountdown();
+    $("#results").css("visibility", "hidden");
+    $("#clock").html("The game begins in... "+showTime);
+    $("#clock").css("visibility", "hidden");
 });//end of 'ready'
 
 window.onload = function () {
-
+    $("#clock").html("The game will begin shortly...get ready!");
+    $("#welcome").show('slow');
     $(".btn").on("click", function () {
         console.log(this);
         console.log("This value:  " + $(this).val());
@@ -196,32 +247,29 @@ window.onload = function () {
         var code = coordinates.split("");
         var currentQuestion = code[0];
         var clickedAnswer = code[1];
-
         if (clickedAnswer == question[currentQuestion].correctAnswer) {
             console.log("A correct answer is logged.");
             correctAnswerCounter++;
-
             hidePreviousQuestion = $("#section-number-" + (counter - 1)).hide('slow');
             timer = timerLength + pauseBetween;
-            // counter++;
-            // presentQuestion(answerTime);
+            counter++;
+            $("#results").css("visibility", "visible");
             pageUpdate();
             return;
         } else if (clickedAnswer != question[currentQuestion].correctAnswer) {
-            console.log("A WRONG answer was logged");
+            console.log("A wrong answer was logged.");
             wrongGuesses++;
             hidePreviousQuestion = $("#section-number-" + (counter - 1)).hide('slow');
             timer = timerLength + pauseBetween;
-            // counter++;
+            counter++;
+            $("#results").css("visibility", "visible");
             pageUpdate();
-            // presentQuestion(answerTime);
             return;
         } else {
-            console.log("No answer given yet, or we're reset")
+            hidePreviousQuestion = $("#section-number-" + (counter - 1)).hide('slow');
             wrongGuesses++;
-            console.log("no answer = a miss")
+            console.log("No input was given, mark as 'wrong'.")
             pageUpdate();
-            // presentQuestion(answerTime);
             return;
 
         }
@@ -235,39 +283,5 @@ window.onload = function () {
 //playing with better ways to do this
 
 
-var tick = setInterval(function () {
-    myTimer();
-}, 1000);
-
-function myTimer() {
-    showTime = timer--;
-    $("#clock").html(showTime);
 
 
-    if (showTime > timerLength) {
-        hideTimer;
-        showLoadingScreen = $("#section-start").css("visibility", "visible");
-        console.log("Break between question");
-    } if (showTime <= timerLength) {
-        showTimer;
-        hideLoadingScreen = $("#section-start").css("visibility", "hidden");
-        showCurrentQuestion = $("#section-number-" + (counter - 1)).show('slow');
-        console.log("Time during the question");
-    } if (showTime <= 0) {
-        console.log("We're failing here in negative numbers.");
-        hideCurrentQuestion = $("#section-number-" + counter).hide('fast');
-        timer = timerLength + pauseBetween;
-    }
-}
-
-
-var showCurrentQuestion = $("#section-number-" + (counter - 1)).show('slow');
-var hidePreviousQuestion = $("#section-number-" + (counter - 1)).hide('fast');
-var showNextQuestion = $("#section-number-" + counter).show('slow');
-var hideLoadingScreen = $("#section-start").css("visibility", "hidden");
-var hideCurrentQuestion = $("#section-number-" + counter).hide('fast');
-var showLoadingScreen = $("#section-start").css("visibility", "visible");
-
-$(document).on("click", function () {
-
-});

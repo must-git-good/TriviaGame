@@ -17,9 +17,13 @@ header{
 h2{
     font-size: 3em;
     opacity: 1;
+    padding: 10px;
+}
+#welcome, #end, .answers {
+    color: #1f0e03;
 }
 body{
-    background-image: url("../../assets/images/literary_bg.jpg");
+    background-image: url("../../assets/images/clock_bg.jpg");
     background-size: 130%;
     background-repeat: none;
     background-color: #bf8149;
@@ -40,6 +44,7 @@ body{
     text-align: right;
     color: #1f0e03;
     font-size: 1.75em;
+    padding: 10px;
 
 }
 .answers{
