@@ -61,12 +61,16 @@ var counter = 0;            //This is the counter for questions presented. Ticks
 var showCurrentQuestion = $("#section-number-" + (counter - 1)).show('slow');
 var hidePreviousQuestion = $("#section-number-" + (counter - 1)).hide('fast');
 var showNextQuestion = $("#section-number-" + counter).show('slow');
-var hideLoadingScreen = $("#section-start").attr("visibility: hidden");
+var hideLoadingScreen = $("#section-start").css("visibility", "hidden");
 var hideCurrentQuestion = $("#section-number-" + counter).hide('fast');
-var showLoadingScreen = $("#section-start").attr("visibility: visible")
+var showLoadingScreen = $("#section-start").css("visibility", "visible");
 var timerLength = 10;
 var pauseBetween = 3;
 var timer = timerLength;
+var hideTimer = $("#clock").css("visibility", "hidden");
+var showTimer = $("#clock").css("visibility", "visible");
+var showTime;
+
 
 
 
@@ -127,47 +131,63 @@ function populateQuestions(question) {
 
 function pageUpdate() {
     $("#results").html("You've known something interesting " + correctAnswerCounter + " times.<br>You've made: " + wrongGuesses + " wrong guesses...");
+    if (correctAnswerCounter + wrongGuesses >= question.length) {
+        console.log("End-game condition");
+        $("#end").html("<h2>Game over. Hope you beat the clock! See your score below!</h2>");
+        $("#end").show();
+        clearInterval(tick);
+    };
 }
 
-var questionCountdown = function () {
+// var questionCountdown = function () {
 
-    setTimeout(questionTimeExpires, 1000 * 12);
-    setTimeout(totalTimeExpires, 1000 * 14);
-    setTimeout(totalTime, 1000 * 16);
+//     setTimeout(questionTimeExpires, 1000 * 12);
+//     setTimeout(totalTimeExpires, 1000 * 14);
+//     setTimeout(totalTime, 1000 * 16);
 
-    function questionTimeExpires() {
-        console.log("No time left to answer.")
-        hidePreviousQuestion = $("#section-number-" + (counter - 1)).hide('slow');
-    }
-    function totalTimeExpires() {
-        showLoadingScreen = $("#section-start").attr("visibility: visible");   
-        console.log("Display results")
-    }
-    function totalTime() {
-
-        console.log("Push next question.")
-        //push next question.
-        hideLoadingScreen = $("#section-start").attr("visibility: hidden");
-        showNextQuestion = $("#section-number-" + counter).show('slow');
-        counter++;
-        pageUpdate();
-        questionCountdown();
-    }
+function questionTimeExpires() {
+    console.log("No time left to answer.")
+    hidePreviousQuestion = $("#section-number-" + (counter - 1)).hide('slow');
 }
+function totalTimeExpires() {
+    showLoadingScreen = $("#section-start").css("visibility", "visible");
+    console.log("Display results")
+}
+function totalTime() {
+
+    console.log("Push next question.")
+    //push next question.
+    hideLoadingScreen = $("#section-start").css("visibility", "hidden");
+    showNextQuestion = $("#section-number-" + counter).show('slow');
+    counter++;
+    pageUpdate();
+    // questionCountdown();
+}
+// }
+
+// var questionOnTimer = function() {
+
+
+
+
+
+
+
+
 
 //Game Execution 
 /////////////////////////////////////////////////////////////////////////////
-    $(document).ready(function () {
-        populateQuestions(question);    //pushes the question Object into the DOM
-        $(".content-hold").hide();      //hides all questions for later use
-        pageUpdate();                     //Gives stats
+$(document).ready(function () {
+    populateQuestions(question);    //pushes the question Object into the DOM
+    $(".content-hold").hide();      //hides all questions for later use
+    pageUpdate();                     //Gives stats
 
-        showCurrentQuestion = $("#section-number-" + (counter - 1)).show('slow');
-        questionCountdown();
-    });//end of 'ready'
+    showCurrentQuestion = $("#section-number-" + (counter - 1)).show('slow');
+    // questionCountdown();
+});//end of 'ready'
 
-    window.onload = function () {
-        
+window.onload = function () {
+
     $(".btn").on("click", function () {
         console.log(this);
         console.log("This value:  " + $(this).val());
@@ -180,8 +200,9 @@ var questionCountdown = function () {
         if (clickedAnswer == question[currentQuestion].correctAnswer) {
             console.log("A correct answer is logged.");
             correctAnswerCounter++;
-            
+
             hidePreviousQuestion = $("#section-number-" + (counter - 1)).hide('slow');
+            timer = timerLength + pauseBetween;
             // counter++;
             // presentQuestion(answerTime);
             pageUpdate();
@@ -190,13 +211,15 @@ var questionCountdown = function () {
             console.log("A WRONG answer was logged");
             wrongGuesses++;
             hidePreviousQuestion = $("#section-number-" + (counter - 1)).hide('slow');
+            timer = timerLength + pauseBetween;
             // counter++;
             pageUpdate();
             // presentQuestion(answerTime);
             return;
         } else {
             console.log("No answer given yet, or we're reset")
-            // counter++;
+            wrongGuesses++;
+            console.log("no answer = a miss")
             pageUpdate();
             // presentQuestion(answerTime);
             return;
@@ -212,45 +235,39 @@ var questionCountdown = function () {
 //playing with better ways to do this
 
 
-var myVar = setInterval(function() {
+var tick = setInterval(function () {
     myTimer();
-  }, 1000);
-  
-  function myTimer() {
-    var showTime = timer--;
-    $("#clock").html(showTime);
-    // $("#clock").attr("visibility", "visible");
-    // document.getElementById("#clock").innerHTML = (d);
+}, 1000);
 
-    
-    if (showTime > timerLength){
-        $("#clock").css("visibility", "hidden");
+function myTimer() {
+    showTime = timer--;
+    $("#clock").html(showTime);
+
+
+    if (showTime > timerLength) {
+        hideTimer;
+        showLoadingScreen = $("#section-start").css("visibility", "visible");
         console.log("Break between question");
     } if (showTime <= timerLength) {
-        $("#clock").css("visibility", "visible");
+        showTimer;
+        hideLoadingScreen = $("#section-start").css("visibility", "hidden");
+        showCurrentQuestion = $("#section-number-" + (counter - 1)).show('slow');
         console.log("Time during the question");
-    } if (showTime <= 0){
-        console.log("We're failing here in negative numbers.")
-        timer = timerLength+pauseBetween;
-        // $("#clock").attr("visibility", "hidden");
-  }
-  }
+    } if (showTime <= 0) {
+        console.log("We're failing here in negative numbers.");
+        hideCurrentQuestion = $("#section-number-" + counter).hide('fast');
+        timer = timerLength + pauseBetween;
+    }
+}
 
 
+var showCurrentQuestion = $("#section-number-" + (counter - 1)).show('slow');
+var hidePreviousQuestion = $("#section-number-" + (counter - 1)).hide('fast');
+var showNextQuestion = $("#section-number-" + counter).show('slow');
+var hideLoadingScreen = $("#section-start").css("visibility", "hidden");
+var hideCurrentQuestion = $("#section-number-" + counter).hide('fast');
+var showLoadingScreen = $("#section-start").css("visibility", "visible");
 
-//   var startTimer = function(){
-//     timer = 5;
-//     $("#clock").attr("visibility", "visible");
-//     if (fixD <= 0){
-//         alert("The logic works.")
-//         $("#clock").attr("visibility", "hidden");
-//     }
+$(document).on("click", function () {
 
-//   }
-
-//   startTimer();
-
-
-  $(document).on("click", function(){
-   
-  });
+});
